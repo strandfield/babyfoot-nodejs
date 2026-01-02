@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/style.css"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="shortcut icon" href="/favicon.ico"/>
+  <title>Upload a game</title>
+  <style>
+    
+    .score-label {
+      color: rgb(0, 0, 0);
+      padding-top: 0.8em;
+      padding-bottom: 0.3em;
+      font-weight: normal;
+      font-size: 1em;
+      line-height: 5px;
+      text-align: center;
+    }
+  
+    .dt-label {
+      color: rgb(0, 0, 0);
+      padding-top: 1em;
+      padding-bottom: 0.3em;
+      margin-bottom: 0.5em;
+      /* add some space below the label */
+      margin-top: 0.3em;
+      /* add margin-top property */
+      font-weight: normal;
+      font-size: 1em;
+      line-height: 5px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('partials/body-header.ejs') -%>
+  <h1>Upload a game</h1>
+
+  <% if (error) { %>
+  <div class="content-box">
+  <p><%= error %></p>
+  </div>
+  <% }  %>
+
+  <form method="POST" id="game_form">
+
+    <label for="player1_name" class="team-label">Team 1 </label>
+    <select id="player1_name" name="player1_name">
+      <option value="" disabled selected>Select player 1</option>
+      <% for (const p of players) { %>
+      <option value="<%= p.username %>"><%= p.shortName %></option>
+      <% } %>
+    </select>
+    <br/>
+    <select id="player2_name" name="player2_name">
+      <option value="" disabled selected>Select player 2</option>
+      <% for (const p of players) { %>
+      <option value="<%= p.username %>"><%= p.shortName %></option>
+      <% } %>
+    </select>
+
+    <label for="team1_score" class="score-label">Score</label>
+    <input type="number" id="team1_score" name="team1_score" value="" min="-9" max="10" inputmode="numeric">
+    <br/>
+
+    <label for="player1_name" class="team-label">Team 2 </label>
+    <select id="player3_name" name="player3_name">
+      <option value="" disabled selected>Select player 3</option>
+      <% for (const p of players) { %>
+      <option value="<%= p.username %>"><%= p.shortName %></option>
+      <% } %>
+    </select>
+    <br/>
+    <select id="player4_name" name="player4_name">
+      <option value="" disabled selected>Select player 4</option>
+      <% for (const p of players) { %>
+      <option value="<%= p.username %>"><%= p.shortName %></option>
+      <% } %>
+    </select>
+
+    <label for="team2_score" class="score-label">Score</label>
+    <input type="number" id="team2_score" name="team2_score" value="" min="-9" max="10" inputmode="numeric">
+
+    <label for="game_date" class="dt-label">Date</label>
+    <input type="date" id="game_date" name="game_date" value="">
+
+    <label for="game_time" class="dt-label">Time</label>
+    <input type="time" name="game_time" value="">
+
+    <input type="hidden" name="utctime" value="">
+
+    <script>
+
+      function padTwoDigits(num) {
+        return num.toString().padStart(2, "0");
+      }
+
+      const now = new Date();
+      const formattedDate = now.getFullYear() + '-' + padTwoDigits((now.getMonth() + 1)) + '-' + padTwoDigits(now.getDate());
+      // Set the default value of the game_date input to today's date
+      document.getElementById("game_date").value = formattedDate;
+      const formattedTime = `${padTwoDigits(now.getHours())}:${padTwoDigits(now.getMinutes())}:${padTwoDigits(now.getSeconds())}`;
+      console.log(formattedTime);
+      document.querySelector("input[name='game_time']").value = formattedTime;
+
+      function validateForm() {
+
+        const formdata = new FormData(game_form);
+
+        if (!formdata.get("game_time") || !formdata.get("game_date")) {
+          alert("Please specify a time and date.");
+          return false;
+        }
+
+        const userdate = new Date(formdata.get("game_date") + " " + formdata.get("game_time"));
+        document.querySelector("input[name='utctime']").value = userdate.getTime();
+
+        // Get the selected player names
+        const player1 = formdata.get("player1_name");
+        const player2 = formdata.get("player2_name");
+        const player3 = formdata.get("player3_name");
+        const player4 = formdata.get("player4_name");
+
+        // Check if all four players are different
+        if (player1 === player2 || player1 === player3 || player1 === player4 || player2 === player3 || player2 === player4 || player3 === player4) {
+          alert("Please select four different players.");
+          return false;
+        }
+
+        // Get the scores
+        const team1_score = Number.parseInt(formdata.get("team1_score"));
+        const team2_score = Number.parseInt(formdata.get("team2_score"));
+
+        // Check if the scores are integers
+        if (isNaN(team1_score) || isNaN(team2_score)) {
+          alert("Scores must be integers.");
+          return false;
+        }
+
+        // Check if the scores are not greater than 10
+        if (team1_score > 10 || team2_score > 10) {
+          alert("Scores cannot be greater than 10.");
+          return false;
+        }
+
+        // Check that the scores are not too negative
+        if (team1_score < -9 || team2_score < -9) {
+          alert("Scores cannot be lower than 0.");
+          return false;
+        }
+
+        // Check if one of the scores is equal to 10
+        if (team1_score != 10 && team2_score != 10) {
+          alert("One of the scores must be equal to 10.");
+          return false;
+        }
+
+        // Check if the scores are not equal
+        if (team1_score === team2_score) {
+          alert("Scores cannot be equal.");
+          return false;
+        }
+
+        // If all conditions are met, submit the form
+        game_form.submit();
+      }
+    </script>
+
+    <br>
+    <input type="submit" value="Create game" onclick="return validateForm()">
+  </form>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    let playernames = urlParams.get('players');
+    if (playernames) {
+      playernames = playernames.split(',');
+      for (let i = 0; i < playernames.length; ++i) {
+        document.getElementById(`player${i+1}_name`).value = playernames[i];
+      }
+    }
+  </script>
+
+  <%- include('partials/do-more-section.ejs') -%>
+
+</body>
+
+</html>

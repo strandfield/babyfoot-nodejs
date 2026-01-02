@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" type="text/css" href="/style.css"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="shortcut icon" href="/favicon.ico"/>
+  <title>2v2 Elo Ranking</title>
+  <style>
+
+  </style>
+  <script>
+    function doLogout() {
+      const result = confirm("You sure you want to logout?");
+      if (!result) {
+        return false;
+      }
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', "/logout");
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          console.log('Logged out successfully');
+          window.location.href = "/";
+        } else {
+          alert('Logout failed:', xhr.status);
+        }
+      };
+
+      xhr.onerror = function () {
+        alert('Network error during logout');
+      };
+
+      xhr.send();
+    }
+  </script>
+</head>
+
+<body>
+  <%- include('partials/body-header.ejs') -%>
+
+  <h1>2v2 Elo Ranking</h1>
+
+  <% if (!authenticated) { %>
+  <p class="content-box">
+    <a class="pushbutton" href="/login">Login</a>
+  </p>
+  <% } else { %>
+  <p class="content-box">
+    Hello <%= locals.user.firstName %>.
+  </p>
+  <% } %>
+  
+  <%- include('partials/do-more-section.ejs', {includeLogoutButton: true}) -%>
+
+</body>
+
+</html>

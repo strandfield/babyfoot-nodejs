@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Player ranking</title>
+  <style>
+    .rating-table {
+      padding-top: 1em;
+      padding-right: 0.2em;
+      padding-bottom: 0.3em;
+      padding-left: 0.2em;
+      border-bottom: 2px solid #ddd;
+      text-align: center;
+    }
+  
+    @media only screen and (max-width: 768px) {
+      .rating-table {
+        font-size: 0.75em !important;
+        border-collapse: collapse;
+        margin-bottom: 1em;
+        margin: 0 auto;
+        text-align: center;
+      }
+    }
+
+  </style>
+  <script>
+
+  </script>
+</head>
+<body class="match-page">
+  <%- include('partials/body-header.ejs') -%>
+  <h1>Player ranking</h1>
+  <p>See where you stand in the competition!</p>
+  <table class="rating-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Rating</th>
+        <th>Games</th>
+        <th>Last Game</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let playerIndex = 0; playerIndex < playerRatings.length; ++playerIndex) { const playerRating = playerRatings[playerIndex]; %>
+      <tr>
+        <td style="text-align: center;">
+          <% if (playerIndex == 0) { %>
+          🥇
+          <% } else if(playerIndex == 1) { %>
+          🥈
+          <% } else if (playerIndex == 2) { %>
+          🥉
+          <% } else if (playerIndex + 1 == playerRatings.length) { %>
+          🐢
+          <% }  else { %>
+          <%= (playerIndex+1) %>
+          <% } %>
+        </td>
+        <td><%= playerRating.player.shortName %></td>
+        <td><%= Math.floor(playerRating.score) %></td>
+        <td style="text-align: center;"><%= playerRating.gamesPlayed %></td>
+        <td><% if(playerRating.game) { %><%= playerRating.game.gameDate.toLocaleString() %><% } %></td>
+      </tr>
+  
+      <% } %>
+  
+    </tbody>
+  </table>
+  
+  <%- include('partials/do-more-section.ejs') -%>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/style.css"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="shortcut icon" href="/favicon.ico"/>
+  <title>Player Metrics</title>
+  <style>
+    /* Grid control */
+    #metricsGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
+      grid-gap: 10px;
+      gap: 10px; /* TODO: is this useful ?*/
+      border: 0px solid rgba(0, 0, 0, 0.1);
+      padding: 1em;
+      overflow: hidden;
+      background-color: #F7F7F7;
+    }
+
+    .tile {
+      background-color: lightgray;
+      height: 100px;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.2em;
+      font-weight: 600;
+      font-size: 1.5em;
+      font-family: SegoeUI, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Meiryo, 'Meiryo UI', Arial Unicode MS, sans-serif;
+      word-wrap: normal;
+    }
+  
+    .metric-label {
+      font-size: 1em;
+      /* Adjust the font size for the label */
+      margin-bottom: 0.3em;
+      /* Add some margin to separate it from the value */
+      justify-content: center;
+      align-items: center;
+      display: block;
+      text-align: center;
+      line-height: 1.3;
+      /* Adjust the line height to reduce the space between lines */
+  
+    }
+  
+    .metric-value {
+      font-size: 1em;
+      /* Adjust the font size for the value */
+      font-weight: bold;
+      /* Make the value bold */
+      justify-content: center;
+      align-items: center;
+      display: block;
+      text-align: center;
+      line-height: 1.3;
+      /* Adjust the line height to reduce the space between lines */
+  
+    }
+  
+    .metric-sub-label {
+      font-size: 0.8em;
+      /* Adjust the font size for the value */
+      font-weight: lighter;
+      justify-content: center;
+      align-items: center;
+      display: block;
+      text-align: center;
+      line-height: 1.3;
+      /* Adjust the line height to reduce the space between lines */
+    }
+  
+  
+    /* Media query for smaller screens, like iPhone */
+    @media screen and (max-width: 767px) {
+      .metric-label {
+        font-weight: 500;
+        font-size: 0.60em;
+        /* Adjust the font size for the label on smaller screens */
+        line-height: normal;
+        /* Adjust the line height to reduce the space between lines */
+        white-space: nowrap;
+        /* Add this property to keep the text in one line */
+  
+  
+      }
+  
+      .metric-value {
+        font-weight: 500;
+        font-size: 0.7em !important;
+        line-height: normal;
+        /* Adjust the line height to reduce the space between lines */
+        white-space: nowrap;
+        /* Add this property to keep the text in one line */
+  
+  
+      }
+  
+      .metric-sub-label {
+        font-weight: 400;
+        font-size: 0.5em;
+        /* Adjust the font size for the value on smaller screens */
+        line-height: normal;
+        /* Adjust the line height to reduce the space between lines */
+  
+      }
+  
+  
+      .tile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  
+  
+    .tile:nth-child(1) {
+      background: linear-gradient(141.69deg, #9BC53D 0%, #5A9 39%);
+      color: #fff;
+    }
+  
+    .tile:nth-child(2) {
+      background: linear-gradient(141.13deg, #56CCF2 26.29%, #2A5298 100%);
+      color: #fff;
+    }
+  
+    .tile:nth-child(3) {
+      background: linear-gradient(141.69deg, #F94144 10%, #C65102 100%);
+      color: #fff;
+    }
+  
+    .tile:nth-child(4) {
+      background: linear-gradient(101.69deg, #9BC53D 14%, #5A9 39%);
+      color: #fff;
+    }
+  
+    .tile:nth-child(5) {
+      background: linear-gradient(111.13deg, #4D90C6 20.29%, #1D3659 90%);
+      color: #fff;
+    }
+  
+    .tile:nth-child(6) {
+      background: linear-gradient(131.13deg, #F7593E 26.29%, #A34601 100%);
+      color: #fff;
+    }
+  
+    .tile:nth-child(7) {
+      background: linear-gradient(141.69deg, #9BC53D 29%, #5A9 80%);
+      color: #fff;
+    }
+  
+    .tile:nth-child(8) {
+      background: linear-gradient(151.13deg, #3E88B5 30.29%, #0F2753 100%);
+      color: #fff;
+    }
+  
+    .tile:nth-child(9) {
+      background: linear-gradient(161.13deg, #F37038 35.29%, #8C3A00 100%);
+      color: #fff;
+    }
+  </style>
+  <script>
+
+  </script>
+</head>
+
+<body class="match-page">
+  <%- include('partials/body-header.ejs') -%>
+  
+  <h1>Player Metrics</h1>
+  <p>Want to see how you're performing? Our metrics have got you covered!</p>
+  
+  <form id="playerSelectionForm">
+    <label for="player_name">Select player:</label>
+    <select id="player_name" name="player_name">
+      <option value="" disabled selected>Select player</option>
+      <% for (const p of players) { %>
+        <option value="<%= p.username %>">
+          <%= p.shortName %>
+        </option>
+        <% } %>
+    </select>
+  </form>
+  
+  <h2 style="text-align: center; margin-bottom: 10px !important; display: none;" id="metricsBlockTitle">Metrics for ...
+  </h2>
+  
+  <div id="metricsGrid">
+  
+  </div>
+  
+  <script>
+
+    function displayMetrics(metrics) {
+
+      console.log(metrics);
+
+      let html = "";
+
+      let add_block = function(title, value, label) {
+        html += `<div class="tile">
+      <span class="metric-label">${title}:</span>
+      <span class="metric-value">${value}</span>
+      <span class="metric-sub-label">(${label})</span>
+    </div>`;
+      }
+
+      // main partner
+      {
+        add_block("Main Partner", metrics.partners.main.shortName, `${metrics.partners.main.wins + metrics.partners.main.losses} games`);
+      }
+
+      // games played
+      {
+        const total_games = metrics.games.played;
+        const avg_score = metrics.totalPointsScored / total_games;
+        add_block("Games Played", total_games, `avg ${avg_score.toFixed(1)} points`);
+      }
+
+      // main rival
+      {
+        const e = metrics.rivals.main;
+        add_block("Main Rival", e.shortName, `${e.wins + e.losses} games`);
+      }
+
+      // best partner
+      {
+        const e = metrics.partners.best;
+        add_block("Best Partner", e.shortName, `${((100 * e.wins) / (e.losses + e.wins)).toFixed(0)}% win rate`);
+      }
+
+      //games won
+      {
+        const total_games = metrics.games.played;
+        const winrate = (100 * metrics.games.won) / total_games;
+        add_block("Games Won", metrics.games.won, `${winrate.toFixed(0)}% win rate`);
+      }
+
+      // easiest rival
+      {
+        const e = metrics.rivals.easiest;
+        const winrate = 100 * e.wins / (e.wins + e.losses);
+        add_block("Easiest Rival", e.shortName, `${winrate.toFixed(0)}% win rate`);
+      }
+
+      // best partner
+      {
+        const e = metrics.partners.worst;
+        add_block("Worst Partner", e.shortName, `${((100 * e.losses) / (e.losses + e.wins)).toFixed(0)}% loss rate`);
+      }
+
+      //games lost
+      {
+        const total_games = metrics.games.played;
+        const lossrate = (100 * metrics.games.lost) / total_games;
+        add_block("Games Lost", metrics.games.lost, `${lossrate.toFixed(0)}% loss rate`);
+      }
+
+      // strongest rival
+      {
+        const e = metrics.rivals.strongest;
+        const lossrate = 100 * e.losses / (e.wins + e.losses);
+        add_block("Strongest Rival", e.shortName, `${lossrate.toFixed(0)}% loss rate`);
+      }
+
+      metricsGrid.innerHTML = html;
+
+      metricsBlockTitle.innerText = `Metrics for ${metrics.player.shortName}`;
+      metricsBlockTitle.style.display = 'block';
+    }
+
+    function fetchPlayerMetrics(username) {
+      let xhr = new XMLHttpRequest();
+
+      xhr.open("GET", `/api/player-metrics?username=${username}`);
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          const status = xhr.status;
+          if (status === 0 || (status >= 200 && status < 400)) {
+            displayMetrics(JSON.parse(xhr.responseText));
+          } else {
+            console.log(status);
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    playerSelectionForm.addEventListener('input', function (event) {
+      console.log(event.target);
+      let firstoption = event.target.querySelector('OPTION');
+      if (firstoption) {
+        firstoption.disabled = true;
+      }
+      const fd = new FormData(playerSelectionForm);
+      const username = fd.get("player_name");
+      if (username) {
+        fetchPlayerMetrics(username);
+      }
+
+    });
+
+  </script>
+
+  <%- include('partials/do-more-section.ejs') -%>
+
+</body>
+
+</html>

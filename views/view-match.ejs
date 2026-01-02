@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<% const players = [game.player1, game.player2, game.player3, game.player4] %>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>View match</title>
+  <style>
+    h2 {
+      text-align: center;
+      margin-top: 2em;
+    }
+
+    table {
+      margin-bottom: 1.5em !important;
+      margin-top: 1.5em !important;
+    }
+  </style>
+  <script>
+    const gameId = "<%= game.id %>";
+    function deleteMatch() {
+
+      const goahead = confirm("Are you sure you want to do that?");
+      if (!goahead) {
+        return;
+      }
+
+      const xhr = new XMLHttpRequest();
+
+      xhr.open('DELETE', `/match/${gameId}`);
+
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          console.log('Match deleted successfully');
+          window.location.href = "/match-list";
+        } else if (xhr.status === 404) {
+          alert('Not found');
+        } else if (xhr.status === 403) {
+          alert('Not authorized');
+        } else {
+          console.error('Delete failed:', xhr.status);
+        }
+      };
+
+      xhr.onerror = function () {
+        console.error('Network error');
+      };
+
+      xhr.send();
+    }
+
+    function showDetails() {
+      showdetails.style.display = 'none';
+      details.style.display = 'block';
+    }
+
+    function hideDetails() {
+      details.style.display = 'none';
+      showdetails.style.display = 'block';
+    }
+  </script>
+</head>
+<body class="match-page">
+  <%- include('partials/body-header.ejs') -%>
+  <h1>View match</h1>
+
+  <h2 id="summary">Match summary</h2>
+  
+  <table style="text-align: center;">
+    <tbody>
+      <tr><td>Game #</td><td><%= game.number %></td></tr>
+      <tr><td>Date:</td><td><%= game.date.toLocaleString() %></td></tr>
+      <% if (game.scoreTeam1 > game.scoreTeam2) { %>
+      <tr><td>Winning Team:</td><td><%= game.player1.shortName %> &amp; <%= game.player2.shortName %> (score: <%= game.scoreTeam1 %>)</td></tr>
+      <tr><td>Losing Team:</td><td><%= game.player3.shortName %> &amp; <%= game.player4.shortName %> (score: <%= game.scoreTeam2 %>)</td></tr>
+      <% } else { %>
+      <tr><td>Winning Team:</td><td><%= game.player3.shortName %> &amp; <%= game.player4.shortName %> (score: <%= game.scoreTeam2 %>)</td></tr>
+      <tr><td>Losing Team:</td><td><%= game.player1.shortName %> &amp; <%= game.player2.shortName %> (score: <%= game.scoreTeam1 %>)</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  <p id="showdetails" style="font-size: small;"><a href="#details" onclick="showDetails()">Show details...</a></p>
+
+  <div id="details" style="display: none;">
+  <h2>Match details</h2>
+  
+  <table style="text-align: center;">
+    <tbody>
+      <tr><td>ID</td><td><%= game.id %></td></tr>
+      <tr><td>Submission date</td><td><%= game.submissionDate.toLocaleString() %></td></tr>
+      <% if (game.submittedBy) { %>
+      <tr><td>Submitted by</td><td><%= game.submittedBy %></td></tr>
+      <% } %>
+      <tr><td>Game Date</td><td><%= game.date.toLocaleString() %></td></tr>
+      <tr><td>Player 1</td><td><%= game.player1.shortName %></td></tr>
+      <tr><td>Player 2</td><td><%= game.player2.shortName %></td></tr>
+      <tr><td>Player 3</td><td><%= game.player3.shortName %></td></tr>
+      <tr><td>Player 4</td><td><%= game.player4.shortName %></td></tr>
+      <tr><td>Score Team 1</td><td><%= game.scoreTeam1 %></td></tr>
+      <tr><td>Score Team 2</td><td><%= game.scoreTeam2 %></td></tr>
+    </tbody>
+  </table>
+
+  <p style="font-size: small;"><a href="#summary" onclick="hideDetails()">Hide details</a></p>
+  </div>
+
+  <p class="content-box"><%= quote %></p>
+
+  <h2>Rating evolution</h2>
+
+  <table style="text-align: center;">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Game #</th>
+        <th class="score">Previous Score</th>
+        <th class="score">New Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (const player of players) { %>
+        <% 
+        let ds = Math.round(player.newScore) - Math.round(player.previousScore);
+        let dsstr = ds < 0 ? ds.toString() : ("+" + ds.toString());
+         %>
+      <tr>
+        <td><%= player.shortName %></td>
+        <td><%= player.gameNumber %></td>
+        <td><%= Math.round(player.previousScore) %></td>
+        <td><%= Math.round(player.newScore) %> (<%= dsstr %>)</td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  <div class="action-grid">
+    <% if (game.previousGame) { %>
+      <a href="/view-match?id=<%= game.previousGame.id %>" class="action action1">Previous Game</a>
+    <% } else { %>
+      <span class="action action1" style="background: grey;">Previous Game</span>
+    <% } %>
+    
+    <% if (game.nextGame) { %>
+      <a href="/view-match?id=<%= game.nextGame.id %>" class="action action1">Next Game</a>
+    <% } else { %>
+      <% const playerlist = players.map(e=>e.username).join(','); %>
+      <a href="/upload-game?players=<%= playerlist %>" class="action action1">Upload Rematch</a>
+    <% } %>
+
+    <% if (canDeleteMatch) { %>
+      <a href="#" class="action act-danger" onclick="deleteMatch()">Delete match</a>
+    <% } %>
+  </div>
+  
+  <%- include('partials/do-more-section.ejs') -%>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Login</title>
+  <style>
+  </style>
+  <script>
+
+  </script>
+</head>
+<body>
+  
+  <h1>Login</h1>
+
+  <form id="loginForm" method="POST" action="/login">
+    <label for="urname">Username:</label>
+    <input type="text" name="urname" autocomplete="username"><br/>
+    <label for="mdp">Password:</label>
+    <input type="password" name="mdp" autocomplete="current-password" required><br/>
+    <input type="submit" value="Login">
+  </form>
+
+  <p class="content-box" style="margin-top: 2em; text-align: center;">
+    <a href="/">Go back home...</a>
+  </p>
+
+</body>
+</html>

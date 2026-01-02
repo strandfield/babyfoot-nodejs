@@ -1,0 +1,5 @@
+﻿build/*
+dist/*
+ignore/*
+node_modules/*
+data/*

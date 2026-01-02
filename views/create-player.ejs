@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Add player</title>
+  <style>
+  </style>
+  <script>
+    function confirmSubmit() {
+      var result = confirm("Are you sure you want to add this player?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
+</head>
+<body>
+  <%- include('partials/body-header.ejs') -%>
+  
+  <h1>Add players</h1>
+
+  <% if (locals.addedUser) { %>
+  <div class="content-box">
+  <p>
+      <% if (Number.isInteger(locals.addedUser)) { %>
+    User already exists.
+      <% } else { %>
+    Added user <%= locals.addedUser.username %>.
+      <% }  %>
+  </p>
+  </div>
+  <% } %>
+
+  <form method="POST" onsubmit="return confirmSubmit()">
+    <label for="first_name">First Name:</label>
+    <input type="text" name="first_name"><br>
+    <label for="last_name">Last Name:</label>
+    <input type="text" name="last_name"><br>
+    <label for="user_name">Username:</label>
+    <input type="text" name="user_name" placeholder="May be left empty"><br>
+    <input type="submit" value="Add Player">
+  </form>
+  
+  <%- include('partials/do-more-section.ejs') -%>
+</body>
+</html>

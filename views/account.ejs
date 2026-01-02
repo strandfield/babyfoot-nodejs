@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>My account</title>
+  <style>
+  </style>
+  <script>
+    function validateForm() {
+      let fd = new FormData(myForm);
+
+      if (fd.has("password")) {
+        if (!fd.get("password")) {
+          alert("Please enter your password.");
+          return false;
+        }
+      } else {
+        if (!fd.get("newpassword")) {
+          alert("Please enter a new password.");
+          return false;
+        }
+      }
+
+      return true;
+    }
+  </script>
+</head>
+<body>
+  
+  <h1>My account</h1>
+
+  <form id="myForm" method="POST" action="/account/update" onsubmit="return validateForm()">
+    <label for="username">Username:</label>
+    <input type="text" name="username" value="<%= player.username %>"><br/>
+    <label for="first_name">First Name:</label>
+    <input type="text" name="first_name" value="<%= player.firstName %>"><br/>
+    <label for="last_name">Last Name:</label>
+    <input type="text" name="last_name" value="<%= player.lastName %>"><br/>
+    <% if(!passwordlessUser) { %>
+    <label for="password">Password:</label>
+    <input type="password" name="password" required><br/>
+    <% } %>
+    <label for="newpassword">New Password:</label>
+    <input type="password" autocomplete="new-password" name="newpassword" <% if(!passwordlessUser) { %>placeholder="May be left empty" <% } else { %>required<% } %>><br/>
+    <input type="submit" value="Update">
+  </form>
+  
+  <%- include('partials/do-more-section.ejs', {authenticated: true}) -%>
+
+  <% if (isAdmin) { %>
+  <div class="action-grid">
+    <a href="/generate-recovery-link" class="action act-secondary">Gen. Recovery Link</a> 
+  </div>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,505 @@
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    font-family: SegoeUI, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Meiryo, 'Meiryo UI', Arial Unicode MS, sans-serif;
+    color: #111;   
+}
+
+a {
+    text-decoration: none;
+  }
+  
+h1, h2, h3 {
+    font-weight: 700;
+    margin-top: 0.3em;
+    font-weight: 80%;
+}
+h1 {
+    font-weight: 700;
+    color: #1b4aef;
+    font-size: 64px;
+    font-family: SegoeUI, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Meiryo, 'Meiryo UI', Arial Unicode MS, sans-serif;
+    text-align: center;
+}
+
+#devBanner {
+  width: 100%;
+  border: 1px dashed red;
+}
+
+.do-more {
+  margin-top: 0.0em;
+  border-top: 0px solid #ccc;
+  padding-top: 0.0em;
+  background-color: #EEF0F9; /* light blue */
+  color: #000000; /* white */
+}
+
+  .do-more h2 {
+
+    font-weight: 700;
+    margin-top: 0.5em;
+    padding-top: 0.2em;
+    color: #000000;
+    font-size: 30px;
+    font-family: SegoeUI, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Meiryo, 'Meiryo UI', Arial Unicode MS, sans-serif;
+    text-align: center;
+  }
+  
+  .do-more p {
+    font-size: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 0;
+    font-family: SegoeUI, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Meiryo, 'Meiryo UI', Arial Unicode MS, sans-serif;
+    text-align: center;
+
+  }
+
+  @media only screen and (max-width: 1000px) {
+    h1 {
+        font-size: 50px;
+    }
+    h2 {
+        font-size: 36px;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    h1 {
+        font-size: 40px;
+    }
+    h2 {
+        font-size: 24px;
+    }
+}
+
+.cdx_mkt_subtext_container {
+    max-width: 1200px;
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+@media only screen and (max-width: 700px) {
+    .cdx_mkt_subtext_container {
+        max-width: 80%;
+        margin-bottom: 22px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .cdx_mkt_subtext_container {
+        max-width: 90%;
+    }
+}
+
+form {
+    width: 90%;
+    margin: 0.5em auto;
+    padding: 0.4em;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.content-box {
+    width: 90%;
+    margin: 0.5em auto;
+    padding: 1.4em;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.team-label {
+  padding-top: 0.1em;
+  margin-bottom: 0.3em;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+}
+
+.game_date {
+  white-space: nowrap;
+}
+
+label {
+    font-size: 22px;
+    line-height: 20px;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    background: none;
+    border: none;
+    display: block;
+    text-align: center;
+    font-family: SegoeUI, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Meiryo, 'Meiryo UI', Arial Unicode MS, sans-serif;
+}
+
+input[type="text"], input[type="password"], input[type="number"], select {
+    width: 80%;
+    /* padding: 0.8em;*/
+    font-size: 1em;
+    margin-top: 0.8em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    text-align-last: center;
+    display: block;
+}
+
+input[type="date"], input[type="time"], select {
+    width: 80%;
+   /* padding: 0.8em;*/
+    font-size: 1em;
+    margin-top: 0.8em;
+    margin-bottom: 0.1em;
+    border: 0px solid #ddd;
+    border-radius: 5px;
+    display: block;
+    margin: auto;
+    box-sizing: border-box;
+    text-align: center;
+    text-align-last: center; 
+}
+
+input[type="submit"] {
+    width: 80%;
+    padding: 0.5em;
+    background: linear-gradient(81.62deg, #ffffff 8.72%, #ffffff 85.01%);
+    color: #1b4aef;
+    border: 2px solid #174ae4;
+    border-radius: 70px;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.2em;
+    margin-bottom: 0.4em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(81.62deg, #ffffff 8.72%, #ffffff 85.01%);
+    box-shadow: 0 .6px 1.8px rgba(0, 0, 0, .1), 0 3.2px 7.2px rgba(0, 0, 0, .13);
+    overflow: hidden;
+}
+
+.pushbutton {
+  width: 80%;
+  padding: 0.5em;
+  background: linear-gradient(81.62deg, #ffffff 8.72%, #ffffff 85.01%);
+  color: #1b4aef;
+  border: 2px solid #174ae4;
+  border-radius: 70px;
+  font-size: 1.2em;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.2em;
+  margin-bottom: 0.4em;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+}
+
+.pushbutton:hover {
+  background: linear-gradient(81.62deg, #ffffff 8.72%, #ffffff 85.01%);
+  box-shadow: 0 .6px 1.8px rgba(0, 0, 0, .1), 0 3.2px 7.2px rgba(0, 0, 0, .13);
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 575px) {
+    form {
+        width: 80%;
+    }
+
+    .content-box {
+        width: 80%;
+    }
+}
+@media only screen and (min-width: 576px) {
+    form {
+        width: 80%;
+    }
+
+    .content-box {
+        width: 80%;
+    }
+}
+@media only screen and (min-width: 768px) {
+    form {
+        width: 60%;
+    }
+
+    .content-box {
+        width: 60%;
+    }
+}
+@media only screen and (min-width: 992px) {
+    form {
+        width: 50%;
+    }
+
+    .content-box {
+        width: 50%;
+    }
+}
+@media only screen and (min-width: 1200px) {
+    form {
+        width: 25%;
+    }
+
+    .content-box {
+        width: 25%;
+    }
+}
+
+/* Grid control */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: center;
+  gap: 10px;
+  border: 0px solid rgba(0, 0, 0, 0.1);
+  padding: 1em;
+  overflow: hidden;
+  background-color: #EBF0F9;
+}
+
+.action {
+  background-color: lightgray;
+  height: 100px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+  
+  /* Individual actions */
+.action:nth-child(1) {
+  background: linear-gradient(141.69deg, #3077e2 0%, #1b42ab 39%);
+}
+
+.action:nth-child(2) {
+  background: linear-gradient(141.13deg, #106cde 26.29%, #36a5ef 100%);
+}
+
+.action:nth-child(3) {
+  background: linear-gradient(141.69deg, #2f61e9 10%, #106cde 100%);
+}
+
+.action:nth-child(4) {
+  background: linear-gradient(141.13deg, #3077e2 26.29%, #1b42ab 100%);
+}
+
+.action:nth-child(5) {
+  background: linear-gradient(141.13deg, #2f61e9 26.29%, #1b42ab 100%);
+}
+
+.action:nth-child(6) {
+  background: linear-gradient(90deg, #274bdb 0%, #4fa3ff 100%);
+}
+
+  /* Common styles for all actions */
+.action {
+  height: 100px;
+  padding: 0.2em;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.5em;
+  font-family: SegoeUI, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Meiryo, 'Meiryo UI', Arial Unicode MS, sans-serif;
+  word-wrap: normal;
+}
+
+.act-secondary {
+  background: linear-gradient(141.69deg, #9BC53D 0%, #5A9 39%) !important;
+  color: #fff;
+}
+
+.act-danger {
+  background: linear-gradient(141.69deg, #F94144 10%, #C65102 100%) !important;
+  color: #fff;
+}
+
+
+.match-page {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.match-page p {
+  font-size: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  line-height: 1.5;
+  margin-bottom: 0;
+  font-family: SegoeUI, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Meiryo, 'Meiryo UI', Arial Unicode MS, sans-serif;
+  text-align: center;
+}
+
+.match-page table {
+  font-size: 1em;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .match-page table {
+    font-size: 0.60em;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.match-page table tr td.score {
+  text-align: center;
+  width: 60px;
+}
+
+.match-page table tr td {
+  padding: 0.2em 0.5em;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.match-page h1 {
+  padding-bottom: 0em;
+
+}
+
+.match-page table th {
+  padding-top: 1em;
+  padding-right: 0.2em;
+  padding-bottom: 0.3em;
+  padding-left: 0.2em;
+  border-bottom: 2px solid #ddd;
+  text-align: center;
+}
+
+.match-page table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.month-label {
+  padding-top: 0.5em;
+  margin-bottom: 0.3em;
+  color: rgb(0, 0, 0);
+  /* Example */
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  text-align: center;
+}
+
+form input[type="submit"] {
+  margin-top: 1em;
+}
+
+/* Chart DASH */
+/* Style the dropdown container */
+
+.dropdown-container {
+  margin: auto;
+}
+
+.chart-container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.nsewdrag.drag {
+  margin: 0.5em auto;
+  padding: 0.4em;
+  position: relative;
+  top: 50px;
+}
+
+/* Add some space between the dropdown and chart containers on small screens */
+@media screen and (max-width: 576px) {
+  .dropdown-container {
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  .chart-container {
+    width: 100%;
+    height: calc(100vh - 200px);
+    margin-top: 1em;
+  }
+
+  /* Move the legend below the chart on small screens */
+  .chart-container .plotly .legend {
+    position: absolute;
+    bottom: -2em;
+    left: 0;
+    right: 0;
+    margin: 0;
+  }
+
+  .graph-row {
+    justify-content: flex-start;
+    left: 0%;
+  }
+}
+
+/* Make the chart responsive on larger screens */
+@media screen and (min-width: 577px) {
+  .dropdown-container {
+    width: 50%;
+  }
+
+  .chart-container {
+    width: 80%;
+    height: 500px;
+  }
+}
+
+/* Set the graph size based on the screen size */
+#rating-graph {
+  width: 100%;
+  height: 100%;
+}
+
+.graph-row {
+  display: flex;
+  justify-content: center;
+}

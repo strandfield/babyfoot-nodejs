@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Generate Recovery Link</title>
+  <style>
+    p { text-align: center;}
+  </style>
+  <script>
+    function confirmForm() {
+      let fd = new FormData(playerSelectionForm);
+
+      if (!fd.get("player_name")) {
+        alert("You must select a valid player.");
+        return false;
+      }
+
+      const result = confirm("Are you sure you want to do that?");
+      if (result) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  </script>
+</head>
+<body>
+  
+  <h1>Generate Recovery Link</h1>
+
+  <% if (locals.recoveryLink) { %>
+  <div class="content-box">
+    <a href="<%= locals.recoveryLink.url %>">Recovery link for <%= locals.recoveryLink.player.username %></a>
+  </div>
+  <% } %>
+
+  <p>Reset the password and generate a recovery link for a player.</p>
+  
+  <form id="playerSelectionForm" method="POST" onsubmit="return confirmForm()">
+    <label for="player_name">Select player:</label>
+    <select id="player_name" name="player_name">
+      <option value="" disabled selected>Select player</option>
+      <% for (const p of players) { %>
+        <option value="<%= p.username %>">
+          <%= p.shortName %>
+        </option>
+        <% } %>
+    </select>
+    <input type="submit" value="Generate link">
+  </form>
+
+  <%- include('partials/do-more-section.ejs', {authenticated: true}) -%>
+
+</body>
+</html>

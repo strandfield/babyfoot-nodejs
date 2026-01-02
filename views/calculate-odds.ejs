@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/style.css"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="shortcut icon" href="/favicon.ico"/>
+  <title>Calculate odds</title>
+  <style>
+
+    .odds-table {
+      margin: 0 auto;
+      margin-top: 0.3em;
+      border-collapse: separate;
+      border-spacing: 10px;
+      border: #000000;
+    }
+
+    .odds-table td {
+      text-align: center;
+    }
+
+  </style>
+  <script>
+    const SKILL_FACTOR = 1/500;
+    let data = JSON.parse(`<%- JSON.stringify(userdata) %>`);
+
+    function getEloScoreOf(playerUsername) {
+      return data[playerUsername].score;
+    }
+
+    // Probability of `a` winning against `b`
+    function P(a, b) {
+      if (Array.isArray(a)) {
+        console.assert(a.length == 2);
+        return 0.5 * (P(a[0], b) + P(a[1], b));
+      } else {
+        if (Array.isArray(b)) {
+          console.assert(b.length == 2);
+          return 0.5 * (P(a, b[0]) + P(a, b[1]));
+        } else {
+          // base case: `a` and `b` are Elo scores
+          return 1 / (1 + Math.pow(10, SKILL_FACTOR * (b - a)));
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <%- include('partials/body-header.ejs') -%>
+  
+  <h1>Calculate odds</h1>
+
+  <form id="theform">
+  
+    <label for="player1_name" class="team-label">Team 1 </label>
+    <select id="player1_name" name="player1_name">
+      <option value="" selected>Select player 1</option>
+    </select>
+  
+    <br />
+  
+    <select id="player2_name" name="player2_name">
+      <option value="" selected>Select player 2</option>
+    </select>
+
+    <table class="odds-table" style="display: none;">
+    </table>
+    
+    <br />
+  
+    <label for="player3_name" class="team-label">Team 2 </label>
+    <select id="player3_name" name="player3_name">
+      <option value="" selected>Select player 3</option>
+    </select>
+  
+    <br />
+  
+    <select id="player4_name" name="player4_name">
+      <option value="" selected>Select player 4</option>
+    </select>
+
+    <table class="odds-table" style="display: none;">
+    </table>
+    
+    <br />
+  
+  </form>
+
+  <script>
+
+    // setup form
+      {
+        let p1field = document.getElementById('player1_name');
+        let p2field = document.getElementById('player2_name');
+        let p3field = document.getElementById('player3_name');
+        let p4field = document.getElementById('player4_name');
+        let fields = [p1field, p2field, p3field, p4field];
+        for (const field of fields) {
+          for (const k in data) {
+            const username = k;
+            const userinfo = data[k];
+            let opt = document.createElement('OPTION');
+            opt.setAttribute('value', username);
+            opt.innerText = userinfo.shortName;
+            field.appendChild(opt);
+          }
+        }
+      }
+    
+    let form = document.getElementById('theform');
+
+    function refreshOddsTables() {
+      const fd = new FormData(form);
+
+      const player1Name = fd.get('player1_name');
+      const player2Name = fd.get('player2_name');
+      const player3Name = fd.get('player3_name');
+      const player4Name = fd.get('player4_name');
+
+      if (!player1Name || !player2Name || !player3Name || !player4Name) {
+        return;
+      }
+
+      const s1 = getEloScoreOf(player1Name) ?? 1500;
+      const s2 = getEloScoreOf(player2Name) ?? 1500;
+      const s3 = getEloScoreOf(player3Name) ?? 1500;
+      const s4 = getEloScoreOf(player4Name) ?? 1500;
+
+      const p1 = P([s1,s2], [s3, s4]);
+      const p2 = 1 - p1;
+      console.log(`${Math.abs(p2 - P([s4, s3], [s1,s2]))}`);
+
+      const probabilities = [p1, p2];
+      const odds = probabilities.map(e => 1/e);
+
+      const tables = document.querySelectorAll(".odds-table");
+
+      for (const i of [0,1]) {
+        tables[i].style.display = 'table';
+        tables[i].innerHTML =  `
+      <tbody>
+<tr><td>🏆 Chance of winning: ${(probabilities[i]*100).toFixed(1)}%</td></tr>
+  <tr><td>💰 Odd: ${Math.round(odds[i])}</td></tr>
+        </tbody>
+      `;
+      }
+    }
+    
+    form.addEventListener('input', function (event) {
+      console.log(event.target);
+      let firstfield = event.target.querySelector('OPTION');
+      if (firstfield) {
+        firstfield.disabled = true;
+      }
+      refreshOddsTables();
+    });
+    
+  </script>
+
+  <%- include('partials/do-more-section.ejs') -%>
+
+</body>
+
+</html>

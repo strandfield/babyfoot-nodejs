@@ -1,0 +1,24 @@
+<div class="do-more">
+  <h2>Explore more options</h2>
+  <p>Make the most of your game time with this all-in-one platform. Calculate your odds, compare your ranking, and
+    upload your game results quickly and easily.</p>
+</div>
+
+<div class="action-grid">
+  <% if (authenticated) { %>
+  <a href="/upload-game" class="action">Upload game</a>
+  <a href="/create-player" class="action">Add player</a>
+  <% } %>
+  <a href="/rating" class="action">Ranking</a>
+  <a href="/match-list" class="action">Match history</a>
+  <a href="/player-metrics" class="action">Players Metrics</a>
+  <a href="/calculate-odds" class="action">Calculate odds</a>
+  <% if (authenticated) { %>
+  <a href="/account" class="action act-secondary">My Account</a> 
+    <% if (typeof includeLogoutButton != 'undefined' && includeLogoutButton) { %>
+    <a href="#" class="action act-danger" onclick="doLogout()">Logout</a>
+    <% } else { %>
+    <a href="/" class="action act-secondary">Home</a> 
+    <% } %>
+  <% } %>
+</div>

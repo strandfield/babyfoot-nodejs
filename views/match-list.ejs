@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Match history</title>
+  <style>
+
+  </style>
+  <script>
+
+  </script>
+</head>
+<body class="match-page">
+  <%- include('partials/body-header.ejs') -%>
+
+  <h1>Match history</h1>
+  
+  <table style="text-align: center;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Player 1</th>
+        <th>Player 2</th>
+        <th class="score">Score</th>
+        <th>Player 3</th>
+        <th>Player 4</th>
+        <th class="score">Score</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (const matchRating of matchRatings) { const game = matchRating.game; %>
+      <tr>
+        <td><a href="/view-match?id=<%= game.uuid %>"><%= game.uuid.substring(0,8) %></a></td>
+        <td><%= game.player1.shortName %></td>
+        <td><%= game.player2.shortName %></td>
+        <td><%= game.team1Score %></td>
+        <td><%= game.player3.shortName %></td>
+        <td><%= game.player4.shortName %></td>
+        <td><%= game.team2Score %></td>
+        <td><%= game.gameDate.toLocaleString() %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  
+  <%- include('partials/do-more-section.ejs') -%>
+</body>
+</html>
