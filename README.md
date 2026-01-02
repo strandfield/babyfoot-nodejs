@@ -50,7 +50,7 @@ npm start
 
 Server should now be listening on the port specified above.
 
-5. Open the app in a web browser `http://localhost:9000/``.
+5. Open the app in a web browser `http://localhost:9000/`.
 
 When running for the first time, the server will create a user "John Doe" with admin rights.
 The credentials for this user are:
@@ -62,6 +62,14 @@ The credentials for this user are:
 2. Go to the "My account" page (`http://localhost:9000/account`), and change the username and password.
 
 If everything went fine, you are good to go!
+
+Alternatively, you may use the provided `Dockerfile` to build and start a container
+for the application.
+
+```
+docker build -t babyfoot:latest .
+docker run -d -p 9000:9000 --name my-babyfoot babyfoot:latest
+```
 
 ## <a name="why"></a>Why ?
 
