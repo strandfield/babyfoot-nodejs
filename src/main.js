@@ -544,7 +544,7 @@ function addGame(p1, p2, p3, p4, t1score, t2score, date, submittedBy) {
     submittedBy = resolvePlayer(submittedBy);
 
     let game = new Game();
-    game.submissionDate = Date.now();
+    game.submissionDate = new Date();
     game.gameDate = date;
     game.player1 = p1;
     game.player2 = p2;
@@ -558,7 +558,7 @@ function addGame(p1, p2, p3, p4, t1score, t2score, date, submittedBy) {
         Game(uuid, submissionDate, gameDate, team1Player1Id, team1Player2Id, team2Player1Id, team2Player2Id, team1Score, team2Score, submittedBy) 
         VALUES(?,?,?,?,?,?,?,?,?,?)
     `);
-    const info = stmt.run(game.uuid, game.submissionDate / 1000, date.getTime() / 1000, p1.id, p2.id, p3.id, p4.id, t1score, t2score, submittedBy?.id);
+    const info = stmt.run(game.uuid, game.submissionDate.getTime() / 1000, date.getTime() / 1000, p1.id, p2.id, p3.id, p4.id, t1score, t2score, submittedBy?.id);
 
     if (!info || !info.lastInsertRowid) {
         return null;
