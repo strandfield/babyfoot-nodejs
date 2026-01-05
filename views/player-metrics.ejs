@@ -205,6 +205,15 @@
 
       let html = "";
 
+      if (!metrics.games.played) {
+        metricsGrid.innerHTML = html;
+
+        metricsBlockTitle.innerText = `${metrics.player.shortName} hasn't played any game yet!`;
+        metricsBlockTitle.style.display = 'block';
+
+        return;
+      }
+
       let add_block = function(title, value, label) {
         html += `<div class="tile">
       <span class="metric-label">${title}:</span>
