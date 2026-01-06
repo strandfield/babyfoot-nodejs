@@ -731,6 +731,37 @@ function getPlayerMetrics(player) {
     };
 }
 
+function getPlayerRatingEvolution(player) {
+    player = resolvePlayer(player);
+    console.assert(player);
+
+    let ratings = [];
+    let dates = [];
+
+    let rating_iterator = ctx.scoreTracker.getPlayerRating(player);
+
+    while (rating_iterator && rating_iterator.game) {
+
+        ratings.push(Math.round(rating_iterator.score));
+        dates.push(rating_iterator.game.gameDate.getTime());
+        rating_iterator = rating_iterator.previous;
+    }
+
+    ratings.reverse();
+    dates.reverse();
+
+    return {
+        player: {
+            username: player.username,
+            shortName: player.shortName,
+        },
+        timeSeries: {
+            x: dates,
+            y: ratings
+        }
+    };
+}
+
 function resolveGameRatingNumber(numberOrId) {
     const gameratings = ctx.scoreTracker.getGameRatingsOrderedAsc();
 
@@ -879,6 +910,7 @@ module.exports = {
     getMatchHistory,
     getActivePlayerScores,
     getPlayerMetrics,
+    getPlayerRatingEvolution,
     getGameInfo,
     updatePlayerNames,
     updatePlayerUsername,

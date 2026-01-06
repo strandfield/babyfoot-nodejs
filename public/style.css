@@ -293,27 +293,27 @@ input[type="submit"]:hover {
 }
   
   /* Individual actions */
-.action:nth-child(1) {
+.action:nth-child(6n+1) {
   background: linear-gradient(141.69deg, #3077e2 0%, #1b42ab 39%);
 }
 
-.action:nth-child(2) {
+.action:nth-child(6n+2) {
   background: linear-gradient(141.13deg, #106cde 26.29%, #36a5ef 100%);
 }
 
-.action:nth-child(3) {
+.action:nth-child(6n+3) {
   background: linear-gradient(141.69deg, #2f61e9 10%, #106cde 100%);
 }
 
-.action:nth-child(4) {
+.action:nth-child(6n+4) {
   background: linear-gradient(141.13deg, #3077e2 26.29%, #1b42ab 100%);
 }
 
-.action:nth-child(5) {
+.action:nth-child(6n+5) {
   background: linear-gradient(141.13deg, #2f61e9 26.29%, #1b42ab 100%);
 }
 
-.action:nth-child(6) {
+.action:nth-child(6n) {
   background: linear-gradient(90deg, #274bdb 0%, #4fa3ff 100%);
 }
 
