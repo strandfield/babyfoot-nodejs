@@ -678,12 +678,14 @@ function getPlayerMetrics(player) {
     }
 
     const get_max_element = function(theMap, f) {
-        let result = ["", -1];
+        let result = ["", null];
+        let best = -1;
         for (const [otherPlayer, wnl] of theMap) {
             const val = f(wnl);
-            if (val > result[1]) {
+            if (val > best) {
                 result[0] = otherPlayer.shortName;
                 result[1] = wnl;
+                best = val;
             }
         }
         return result;
