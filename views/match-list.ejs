@@ -19,27 +19,25 @@
   <table style="text-align: center;">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Player 1</th>
-        <th>Player 2</th>
-        <th class="score">Score</th>
-        <th>Player 3</th>
-        <th>Player 4</th>
-        <th class="score">Score</th>
+        <th>#</th>
         <th>Date</th>
+        <th colspan="2">Team 1</th>
+        <th class="score">Score</th>
+        <th colspan="2">Team 2</th>
+        <th class="score">Score</th>
       </tr>
     </thead>
     <tbody>
-      <% for (const matchRating of matchRatings) { const game = matchRating.game; %>
+      <% for (let index = 0; index < matchRatings.length; ++index) { const matchRating = matchRatings[index]; const game = matchRating.game; %>
       <tr>
-        <td><a href="/view-match?id=<%= game.uuid %>"><%= game.uuid.substring(0,8) %></a></td>
+        <td><a href="/view-match?id=<%= game.uuid %>"><%= matchRatings.length - index %></a></td>
+        <td><%= dateFormatter.format(game.gameDate) %></td>
         <td><%= game.player1.shortName %></td>
         <td><%= game.player2.shortName %></td>
         <td><%= game.team1Score %></td>
         <td><%= game.player3.shortName %></td>
         <td><%= game.player4.shortName %></td>
         <td><%= game.team2Score %></td>
-        <td><%= game.gameDate.toLocaleString() %></td>
       </tr>
       <% } %>
     </tbody>

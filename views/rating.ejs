@@ -62,7 +62,7 @@
         <td><%= playerRating.player.shortName %></td>
         <td><%= Math.floor(playerRating.score) %></td>
         <td style="text-align: center;"><%= playerRating.gamesPlayed %></td>
-        <td><% if(playerRating.game) { %><%= playerRating.game.gameDate.toLocaleString() %><% } %></td>
+        <td><% if(playerRating.game) { %><%= dateFormatter.format(playerRating.game.gameDate) %><% } %></td>
       </tr>
   
       <% } %>

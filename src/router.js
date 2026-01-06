@@ -8,6 +8,11 @@ var express = require('express');
 var router = express.Router();
 
 const isDevelopment = process.env.NODE_ENV != 'production';
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', {
+  dateStyle: "short",
+  timeStyle: "medium",
+  timeZone: "Europe/Paris",
+});
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -20,7 +25,8 @@ function createRenderVars(req, values) {
   let result = {
     isDevelopment: isDevelopment,
     authenticated: req.isAuthenticated(),
-    user: req.user
+    user: req.user,
+    dateFormatter: dateFormatter
   };
 
   if (req.user) {

@@ -69,7 +69,7 @@
   <table style="text-align: center;">
     <tbody>
       <tr><td>Game #</td><td><%= game.number %></td></tr>
-      <tr><td>Date:</td><td><%= game.date.toLocaleString() %></td></tr>
+      <tr><td>Date:</td><td><%= dateFormatter.format(game.date) %></td></tr>
       <% if (game.scoreTeam1 > game.scoreTeam2) { %>
       <tr><td>Winning Team:</td><td><%= game.player1.shortName %> &amp; <%= game.player2.shortName %> (score: <%= game.scoreTeam1 %>)</td></tr>
       <tr><td>Losing Team:</td><td><%= game.player3.shortName %> &amp; <%= game.player4.shortName %> (score: <%= game.scoreTeam2 %>)</td></tr>
@@ -88,11 +88,11 @@
   <table style="text-align: center;">
     <tbody>
       <tr><td>ID</td><td><%= game.id %></td></tr>
-      <tr><td>Submission date</td><td><%= game.submissionDate.toLocaleString() %></td></tr>
+      <tr><td>Submission date</td><td><%= dateFormatter.format(game.submissionDate) %></td></tr>
       <% if (game.submittedBy) { %>
       <tr><td>Submitted by</td><td><%= game.submittedBy %></td></tr>
       <% } %>
-      <tr><td>Game Date</td><td><%= game.date.toLocaleString() %></td></tr>
+      <tr><td>Game Date</td><td><%= dateFormatter.format(game.date) %></td></tr>
       <tr><td>Player 1</td><td><%= game.player1.shortName %></td></tr>
       <tr><td>Player 2</td><td><%= game.player2.shortName %></td></tr>
       <tr><td>Player 3</td><td><%= game.player3.shortName %></td></tr>
