@@ -3,20 +3,54 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="/style.css"/>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
   <link rel="shortcut icon" href="/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="/style.css"/>
   <link rel="stylesheet" href="/MultiSelect.css"/>
   <script src="https://cdn.plot.ly/plotly-3.3.1.min.js" charset="utf-8"></script>
   <title>Rating Evolution</title>
   <style>
 
-    #plotContainer {
-      width: 80%;
+    #rating-graph {
       margin: auto;
+      width: 100%;
     }
-    
+  
+    @media screen and (min-width: 576px) {
+      #rating-graph {
+        max-width: 540px;
+      }
+    }
+  
+    @media screen and (min-width: 768px) {
+      #rating-graph {
+        max-width: 720px;
+      }
+    }
+  
+    @media screen and (min-width: 992px) {
+      #rating-graph {
+        max-width: 960px;
+      }
+    }
+  
+    @media screen and (min-width: 1200px) {
+      #rating-graph {
+        max-width: 1140px;
+      }
+    }
+  
+    @media screen and (min-width: 1400px) {
+      #rating-graph {
+        max-width: 1320px;
+      }
+    }
+  
+    #plotContainer {
+      width: 100%;
+      height: 100%
+    }
   </style>
   <script>
     let usernames = [
@@ -39,8 +73,10 @@
     </select>
   </form>
   
-  <div id="plotContainer">
+  <div id="rating-graph">
+    <div id="plotContainer">
   
+    </div>
   </div>
 
   <%- include('partials/do-more-section.ejs') -%>
@@ -214,6 +250,12 @@
 
       Plotly.react('plotContainer', figure);
     }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      refreshPlot();
+    });
+
+    resizeObserver.observe(plotContainer);
 
   </script>
 </body>
