@@ -739,11 +739,23 @@ function getPlayerRatingEvolution(player) {
     let dates = [];
 
     let rating_iterator = ctx.scoreTracker.getPlayerRating(player);
+    let curtime = Date.now() + 86400 * 1000; // tomorrow
 
     while (rating_iterator && rating_iterator.game) {
+        const t = rating_iterator.game.gameDate.getTime();
+        const r = Math.round(rating_iterator.score);
 
-        ratings.push(Math.round(rating_iterator.score));
-        dates.push(rating_iterator.game.gameDate.getTime());
+        const dt = curtime - t; // remember that `t` values come in decreasing order
+
+        if (dt > 0.5 * 86400 * 1000) {
+            ratings.push(r);
+            dates.push(t);
+            curtime = t;
+        } else {
+            // we skip values that are too close in time to each other
+            // so as not to have multiple plot points per day
+        }
+
         rating_iterator = rating_iterator.previous;
     }
 
