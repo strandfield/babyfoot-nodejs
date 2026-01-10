@@ -293,27 +293,27 @@ input[type="submit"]:hover {
 }
   
   /* Individual actions */
-.action:nth-child(1) {
+.action:nth-child(6n+1) {
   background: linear-gradient(141.69deg, #3077e2 0%, #1b42ab 39%);
 }
 
-.action:nth-child(2) {
+.action:nth-child(6n+2) {
   background: linear-gradient(141.13deg, #106cde 26.29%, #36a5ef 100%);
 }
 
-.action:nth-child(3) {
+.action:nth-child(6n+3) {
   background: linear-gradient(141.69deg, #2f61e9 10%, #106cde 100%);
 }
 
-.action:nth-child(4) {
+.action:nth-child(6n+4) {
   background: linear-gradient(141.13deg, #3077e2 26.29%, #1b42ab 100%);
 }
 
-.action:nth-child(5) {
+.action:nth-child(6n+5) {
   background: linear-gradient(141.13deg, #2f61e9 26.29%, #1b42ab 100%);
 }
 
-.action:nth-child(6) {
+.action:nth-child(6n) {
   background: linear-gradient(90deg, #274bdb 0%, #4fa3ff 100%);
 }
 
@@ -431,75 +431,4 @@ input[type="submit"]:hover {
 
 form input[type="submit"] {
   margin-top: 1em;
-}
-
-/* Chart DASH */
-/* Style the dropdown container */
-
-.dropdown-container {
-  margin: auto;
-}
-
-.chart-container {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.nsewdrag.drag {
-  margin: 0.5em auto;
-  padding: 0.4em;
-  position: relative;
-  top: 50px;
-}
-
-/* Add some space between the dropdown and chart containers on small screens */
-@media screen and (max-width: 576px) {
-  .dropdown-container {
-    width: 100%;
-    margin-bottom: 1em;
-  }
-
-  .chart-container {
-    width: 100%;
-    height: calc(100vh - 200px);
-    margin-top: 1em;
-  }
-
-  /* Move the legend below the chart on small screens */
-  .chart-container .plotly .legend {
-    position: absolute;
-    bottom: -2em;
-    left: 0;
-    right: 0;
-    margin: 0;
-  }
-
-  .graph-row {
-    justify-content: flex-start;
-    left: 0%;
-  }
-}
-
-/* Make the chart responsive on larger screens */
-@media screen and (min-width: 577px) {
-  .dropdown-container {
-    width: 50%;
-  }
-
-  .chart-container {
-    width: 80%;
-    height: 500px;
-  }
-}
-
-/* Set the graph size based on the screen size */
-#rating-graph {
-  width: 100%;
-  height: 100%;
-}
-
-.graph-row {
-  display: flex;
-  justify-content: center;
 }

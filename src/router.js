@@ -326,4 +326,27 @@ router.get('/games.csv', (req, res) => {
   res.send(text);
 });
 
+router.get("/rating-evolution", (req, res) => {
+  const vars = createRenderVars(req, {
+    players: elo2v2.getActivePlayers()
+  });
+  res.render("rating-evolution", vars);
+});
+
+router.get('/api/rating-evolution', (req, res) => {
+  const username = req.query.username?.trim();
+  if (!username) {
+    res.json({status: "bad", message: "missing username"});
+    return;
+  }
+
+  const player = elo2v2.getPlayerByUsername(username);
+  if (!player) {
+    res.json({status: "bad", message: "no such player"});
+    return;
+  }
+
+  res.json(elo2v2.getPlayerRatingEvolution(player));
+});
+
 module.exports = router;

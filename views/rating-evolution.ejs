@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+  <link rel="shortcut icon" href="/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="/style.css"/>
+  <link rel="stylesheet" href="/multiselect.css"/>
+  <script src="https://cdn.plot.ly/plotly-3.3.1.min.js" charset="utf-8"></script>
+  <title>Rating Evolution</title>
+  <style>
+
+    #rating-graph {
+      margin: auto;
+      width: 100%;
+    }
+  
+    @media screen and (min-width: 576px) {
+      #rating-graph {
+        max-width: 540px;
+      }
+    }
+  
+    @media screen and (min-width: 768px) {
+      #rating-graph {
+        max-width: 720px;
+      }
+    }
+  
+    @media screen and (min-width: 992px) {
+      #rating-graph {
+        max-width: 960px;
+      }
+    }
+  
+    @media screen and (min-width: 1200px) {
+      #rating-graph {
+        max-width: 1140px;
+      }
+    }
+  
+    @media screen and (min-width: 1400px) {
+      #rating-graph {
+        max-width: 1320px;
+      }
+    }
+  
+    #plotContainer {
+      width: 100%;
+      height: 100%
+    }
+  </style>
+  <script>
+    let usernames = [
+      <% for (const p of players) { %>"<%= p.username %>",<% } %>
+    ];
+    let shortnames = [
+      <% for (const p of players) { %>"<%= p.shortName %>",<% } %>
+    ];
+  </script>
+</head>
+
+<body class="match-page">
+  <%- include('partials/body-header.ejs') -%>
+  
+  <h1>Rating Evolution</h1>
+  
+  <form id="playerSelectionForm">
+    <select id="playerSelect" data-placeholder="Select options" multiple="multiple">
+
+    </select>
+  </form>
+  
+  <div id="rating-graph">
+    <div id="plotContainer">
+  
+    </div>
+  </div>
+
+  <%- include('partials/do-more-section.ejs') -%>
+
+  <script src="/multiselect.js"></script>
+  <script type="text/javascript">
+    let options = [];
+    for (let i = 0; i < usernames.length; ++i) {
+      options.push({ value: usernames[i], text: shortnames[i] });
+    }
+
+    options.sort((a, b) => a.text.localeCompare(b.text));
+
+    let select = new MultiSelect(playerSelect, {
+      data: options,
+      placeholder: 'Select options',
+      max: 5,
+      search: true,
+      selectAll: false,
+      onChange: function (value, text, element) {
+        //console.log('Change:', value, text, element);
+      },
+      onSelect: function (value, text, element) {
+        //console.log('Selected:', value, text, element);
+        addPlayer(value, text);
+      },
+      onUnselect: function (value, text, element) {
+        // console.log('Unselected:', value, text, element);
+        removePlayer(value);
+      }
+    });
+
+    const plotBase = {
+      "data": [],
+      "layout": {
+        "xaxis": {
+          "title": {
+            "text": ""
+          },
+          "fixedrange": false,
+          "showgrid": true,
+          "gridcolor": "lightgray",
+          "gridwidth": 0.5,
+          "tickfont": {
+            "family": "Segoe UI, Roboto, Helvetica Neue, Helvetica, Microsoft YaHei, Meiryo, Meiryo UI, Arial Unicode MS, sans-serif",
+            "size": 12
+          }
+        },
+        "yaxis": {
+          "title": {
+            "text": ""
+          },
+          "categoryorder": "total ascending",
+          "ticksuffix": "",
+          "fixedrange": true,
+          "showgrid": true,
+          "gridcolor": "lightgray",
+          "gridwidth": 0.5,
+          "tickfont": {
+            "family": "Segoe UI, Roboto, Helvetica Neue, Helvetica, Microsoft YaHei, Meiryo, Meiryo UI, Arial Unicode MS, sans-serif",
+            "size": 12
+          },
+          "linecolor": "white",
+          "ticks": "",
+          "title": {
+            "standoff": 15
+          },
+          "zerolinecolor": "white",
+          "automargin": true,
+          "zerolinewidth": 2
+        },
+        "font": {
+          "family": "Segoe UI, Roboto, Helvetica Neue, Helvetica, Microsoft YaHei, Meiryo, Meiryo UI, Arial Unicode MS, sans-serif",
+          "size": 18
+        },
+        "legend": {
+          "orientation": "h",
+          "xanchor": "center",
+          "x": 0.5,
+          "yanchor": "bottom",
+          "y": -0.22,
+          "font": {
+            "family": "Segoe UI, Roboto, Helvetica Neue, Helvetica, Microsoft YaHei, Meiryo, Meiryo UI, Arial Unicode MS, sans-serif",
+            "size": 12
+          }
+        },
+        "margin": {
+          "l": 0,
+          "r": 0,
+          "t": 30,
+          "b": 10
+        },
+        "autosize": true,
+        "paper_bgcolor": "white",
+        "plot_bgcolor": "white",
+        "dragmode": "pan",
+        "uirevision": "constant"
+      }
+    };
+
+
+    let playerPlotData = new Map();
+    let playerSelection = new Set();
+
+    function assimilatePlayerRatingEvolution(obj) {
+      const username = obj.player.username;
+      let pd = {
+        shortName: obj.player.shortName,
+        xs: obj.timeSeries.x.map(e => new Date(e)),
+        ys: obj.timeSeries.y
+      };
+
+      playerPlotData.set(username, pd);
+    }
+
+    function addPlayer(username, shortName) {
+      playerSelection.add(username);
+
+      if (!playerPlotData.has(username)) {
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", `/api/rating-evolution?username=${username}`);
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            const status = xhr.status;
+            if (status === 0 || (status >= 200 && status < 400)) {
+              assimilatePlayerRatingEvolution(JSON.parse(xhr.responseText))
+              refreshPlot();
+            } else {
+              console.log(status);
+            }
+          }
+        };
+        xhr.send();
+      } else {
+        refreshPlot();
+      }
+    }
+
+    function removePlayer(username) {
+      playerSelection.delete(username);
+      refreshPlot();
+    }
+
+    Plotly.newPlot('plotContainer', plotBase);
+
+    function refreshPlot() {
+      let figure = {};
+      Object.assign(figure, plotBase);
+
+      let create_plotdata_for_player = function (username) {
+        const pd = playerPlotData.get(username);
+
+        return {
+          "line": {
+            "shape": "spline"
+          },
+          "name": pd.shortName,
+          "x": pd.xs,
+          "y": pd.ys,
+          "type": "scatter"
+        };
+      };
+
+      figure.data = [];
+
+      for (const username of playerSelection) {
+        let pd = create_plotdata_for_player(username);
+        figure.data.push(pd);
+      }
+
+      Plotly.react('plotContainer', figure);
+    }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      refreshPlot();
+    });
+
+    resizeObserver.observe(plotContainer);
+
+  </script>
+</body>
+
+</html>

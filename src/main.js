@@ -731,6 +731,49 @@ function getPlayerMetrics(player) {
     };
 }
 
+function getPlayerRatingEvolution(player) {
+    player = resolvePlayer(player);
+    console.assert(player);
+
+    let ratings = [];
+    let dates = [];
+
+    let rating_iterator = ctx.scoreTracker.getPlayerRating(player);
+    let curtime = Date.now() + 86400 * 1000; // tomorrow
+
+    while (rating_iterator && rating_iterator.game) {
+        const t = rating_iterator.game.gameDate.getTime();
+        const r = Math.round(rating_iterator.score);
+
+        const dt = curtime - t; // remember that `t` values come in decreasing order
+
+        if (dt > 0.5 * 86400 * 1000) {
+            ratings.push(r);
+            dates.push(t);
+            curtime = t;
+        } else {
+            // we skip values that are too close in time to each other
+            // so as not to have multiple plot points per day
+        }
+
+        rating_iterator = rating_iterator.previous;
+    }
+
+    ratings.reverse();
+    dates.reverse();
+
+    return {
+        player: {
+            username: player.username,
+            shortName: player.shortName,
+        },
+        timeSeries: {
+            x: dates,
+            y: ratings
+        }
+    };
+}
+
 function resolveGameRatingNumber(numberOrId) {
     const gameratings = ctx.scoreTracker.getGameRatingsOrderedAsc();
 
@@ -879,6 +922,7 @@ module.exports = {
     getMatchHistory,
     getActivePlayerScores,
     getPlayerMetrics,
+    getPlayerRatingEvolution,
     getGameInfo,
     updatePlayerNames,
     updatePlayerUsername,
