@@ -88,11 +88,10 @@ of storing them in the database. <br/>
 Now the database mostly consists of two tables: one for the players, one 
 for the games.
 
-(to be completed)
+A login system makes hosting an instance on a non-private network relatively safe:
+users need to log in before submitting match results or adding new players.
 
 ## Developer guide
-
-(to be improved)
 
 Install all dependencies (including dev-dependencies) using `npm`.
 
@@ -111,3 +110,9 @@ Brief summary of the dependencies:
   - user authentication uses Passport.js with the `passport-local` strategy
 
 The Elo 2v2 rating system is mostly implemented in `./src/main.js`.
+
+Developers familiar with Express.js should be able to easily navigate the project:
+- templates for generating the HTML pages are in the  `views` folder
+- static assets (including CSS-stylesheets, javascript, images) are in `public`
+- mapping between URLs and the main pages is done by the router in `src/router.js`
+- the entry point of the program is `bin/www`, which relies on `app.js` to create an instance of the application.
