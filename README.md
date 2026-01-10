@@ -18,9 +18,6 @@ Key differences for the end-user:
 - negative scores can be submitted for the loosing team
 - players need to log in to submit game results
 
-Known missing features:
-- the "Rating evolution" page
-
 ## Installation
 
 Requirements:
