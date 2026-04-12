@@ -211,6 +211,12 @@ class PlayerRating {
         console.assert(otherPlayerRating instanceof PlayerRating);
         return 1 / (1 + Math.pow(10, SKILL_FACTOR * (otherPlayerRating.score - this.score)));
     }
+
+    eloDelta()
+    {
+        const prev_score = this.previous ? this.previous.score : DEFAULT_PLAYER_SCORE;
+        return Math.round(this.score - prev_score);
+    }
 }
 
 class GameRating {
