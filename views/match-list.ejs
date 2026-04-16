@@ -35,8 +35,7 @@
       const score_up_class="score-up";
       const score_down_class="score-down";
 	    %> 
-	  
-      <tr data-href="/view-match?id=<%= game.uuid %><%= matchRatings.length - index %>" class="clickable-row">
+      <tr>
         <td><a href="/view-match?id=<%= game.uuid %>"><%= matchRatings.length - index %></a></td>
         <td> <%= dateFormatter.format(game.gameDate) %></td>
         <td>
