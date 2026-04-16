@@ -24,20 +24,38 @@
         <th colspan="2">Team 1</th>
         <th class="score">Score</th>
         <th colspan="2">Team 2</th>
-        <th class="score">Score</th>
       </tr>
     </thead>
     <tbody>
-      <% for (let index = 0; index < matchRatings.length; ++index) { const matchRating = matchRatings[index]; const game = matchRating.game; %>
-      <tr>
+      <% for (let index = 0; index < matchRatings.length; ++index) { const matchRating = matchRatings[index]; const game = matchRating.game; 
+      const evol1 = matchRating.ratingPlayer1.eloDelta();
+      const evol2 = matchRating.ratingPlayer2.eloDelta();
+      const evol3 = matchRating.ratingPlayer3.eloDelta();
+      const evol4 = matchRating.ratingPlayer4.eloDelta();
+      const score_up_class="score-up";
+      const score_down_class="score-down";
+	    %> 
+	  
+      <tr data-href="/view-match?id=<%= game.uuid %><%= matchRatings.length - index %>" class="clickable-row">
         <td><a href="/view-match?id=<%= game.uuid %>"><%= matchRatings.length - index %></a></td>
-        <td><%= dateFormatter.format(game.gameDate) %></td>
-        <td><%= game.player1.shortName %></td>
-        <td><%= game.player2.shortName %></td>
-        <td><%= game.team1Score %></td>
-        <td><%= game.player3.shortName %></td>
-        <td><%= game.player4.shortName %></td>
-        <td><%= game.team2Score %></td>
+        <td> <%= dateFormatter.format(game.gameDate) %></td>
+        <td>
+          <div> <span class="<%= (evol1 > 0) ? score_up_class : score_down_class %>"> <%= Math.abs(evol1) %> </span> </div>
+          <div> <span class="<%= (evol2 > 0) ? score_up_class : score_down_class %>"> <%= Math.abs(evol2) %> </span> </div>
+        </td> 
+        <td>
+         <div> <%= game.player1.shortName %></div>
+         <div> <%= game.player2.shortName %></div>          
+        </td>
+        <td><%= game.team1Score %> - <%= game.team2Score %></td>
+        <td>
+         <div> <%= game.player3.shortName %></div>
+         <div> <%= game.player4.shortName %></div>          
+        </td>        
+        <td>
+          <div> <span class="<%= (evol3 > 0) ? score_up_class : score_down_class %>"> <%= Math.abs(evol3) %> </span> </div>
+          <div> <span class="<%= (evol4 > 0) ? score_up_class : score_down_class %>"> <%= Math.abs(evol4) %> </span> </div>
+        </td>         
       </tr>
       <% } %>
     </tbody>

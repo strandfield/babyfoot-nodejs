@@ -432,3 +432,34 @@ input[type="submit"]:hover {
 form input[type="submit"] {
   margin-top: 1em;
 }
+
+.score-up::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: url("arrow_up.svg") no-repeat center / contain;
+}
+
+.score-up {
+  color: rgb(0, 128, 0);
+  font-weight: bold;
+  font-size: 0.9em;
+  align-items: center;
+}
+
+
+.score-down::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: url("arrow_down.svg") no-repeat center / contain;
+}
+
+.score-down {
+  color: rgb(128, 0, 0);
+  font-weight: bold;
+  font-size: 0.9em;
+  align-items: center;
+}
